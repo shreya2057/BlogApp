@@ -1,4 +1,5 @@
 import { useState } from "react";
+import BlogList from "./BlogList";
 
 const HomePage = () => {
     const heading = "Welcome to blog page"
@@ -14,19 +15,8 @@ const HomePage = () => {
     ])
     return ( 
         <div className="home">
-            <h1>{ heading }</h1>
-                {/* .map is use to display elements of array in html template */}
-                {/* Syntax=> array.map(function(parameters)) */}
-                {/* The function should contain the template to be displayed */}
-                { blogs.map((blog)=>(         
-                        //the react keeps tract of every element of array 
-                        // key should contain unique value. It helps identify which element has been changed
-                        // used in list and arrays   
-                    <div className="blog-preview" key={ blog.id={} }>
-                        <h2>{ blog.title }</h2>
-                        <p>Written by { blog.author }</p>
-                    </div>
-                )) }
+            {/* blogs is the property which is known as porps */}
+            <BlogList blogs = { blogs } heading = { heading } />
         </div>
      );
 }

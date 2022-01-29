@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BlogList from "./BlogList";
 
 const HomePage = () => {
     const heading = "All blogs"
 
+    const [name, setName] = useState('mario');
 
     // hook 
     //consists of value that can be changed later on
@@ -19,12 +20,29 @@ const HomePage = () => {
        return newBlog;
     }
 
+
+    // useEffect function gets triggered when the components loads and thereafter when the state in rerendered
+    useEffect(()=>{
+        console.log("triggered");
+    }, [name]);
+
     return ( 
         <div className="home">
             {/* blogs is the property which is known as porps */}
             <BlogList blogs = { blogs } heading = { heading } handleClickButton = {handleClickButton} />
 
+
+
             {/* <BlogList blogs = { blogs.filter((blog)=>blog.author === "mario") } heading = { "Mario's Blog" } /> */}
+            
+        {/* useEffect Dependency explained */}
+
+            <button onClick={
+                ()=>{
+                    setName('Luigi');
+                }
+            }>Change name</button>
+            <p>{ name }</p>
         </div>
      );
 }

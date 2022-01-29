@@ -2,7 +2,7 @@ import { useState } from "react";
 import BlogList from "./BlogList";
 
 const HomePage = () => {
-    const heading = "Welcome to blog page"
+    const heading = "All blogs"
 
 
     // hook 
@@ -17,6 +17,8 @@ const HomePage = () => {
         <div className="home">
             {/* blogs is the property which is known as porps */}
             <BlogList blogs = { blogs } heading = { heading } />
+
+            <BlogList blogs = { blogs.filter((blog)=>blog.author === "mario") } heading = { "Mario's Blog" } />
         </div>
      );
 }

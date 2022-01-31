@@ -4,32 +4,45 @@ import BlogList from "./BlogList";
 const HomePage = () => {
     const heading = "All blogs"
 
-    const [name, setName] = useState('mario');
+    // const [name, setName] = useState('mario');
 
     // hook 
     //consists of value that can be changed later on
     //blogs is the name of the value inside usestate and setBlogs is the function that changes the value of blogs
-    const [blogs,setBlogs] = useState([
-        { title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1 },
-        { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2 },
-        { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'mario', id: 3 }
-    ])
+    // const [blogs,setBlogs] = useState([
+    //     { title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1 },
+    //     { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2 },
+    //     { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'mario', id: 3 }
+    // ])
 
-    const handleClickButton = (id) => {
-       const newBlog =  setBlogs(blogs.filter((blog) => blog.id !== id));
-       return newBlog;
-    }
+    const [blogs, setBlogs] = useState(null);
+
+    // const handleClickButton = (id) => {
+    //    const newBlog =  setBlogs(blogs.filter((blog) => blog.id !== id));
+    //    return newBlog;
+    // }
 
 
     // useEffect function gets triggered when the components loads and thereafter when the state in rerendered
-    useEffect(()=>{
-        console.log("triggered");
-    }, [name]);
+    // useEffect(()=>{
+    //     console.log("triggered");
+    // }, [name]);
 
+    useEffect(()=>{
+        fetch('http://localhost:8000/blogs')
+        .then(res => {
+            return res.json();
+        }).then(data => {
+            console.log(data);
+            setBlogs(data);
+        })
+    },[]);
+
+    
     return ( 
         <div className="home">
             {/* blogs is the property which is known as porps */}
-            <BlogList blogs = { blogs } heading = { heading } handleClickButton = {handleClickButton} />
+            {/* <BlogList blogs = { blogs } heading = { heading } handleClickButton = {handleClickButton} /> */}
 
 
 
@@ -43,6 +56,9 @@ const HomePage = () => {
                 }
             }>Change name</button>
             <p>{ name }</p> */}
+
+
+            {blogs  && <BlogList blogs = { blogs } heading={ heading }/>}
         </div>
      );
 }

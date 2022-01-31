@@ -37,12 +37,12 @@ const HomePage = () => {
             
         {/* useEffect Dependency explained */}
 
-            <button onClick={
+            {/* <button onClick={
                 ()=>{
                     setName('Luigi');
                 }
             }>Change name</button>
-            <p>{ name }</p>
+            <p>{ name }</p> */}
         </div>
      );
 }

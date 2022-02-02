@@ -18,6 +18,8 @@ const HomePage = () => {
     const [blogs, setBlogs] = useState(null);
     const [isPending, setIsPending] = useState(true);
 
+    const [error, setError] = useState(null)
+
     // const handleClickButton = (id) => {
     //    const newBlog =  setBlogs(blogs.filter((blog) => blog.id !== id));
     //    return newBlog;
@@ -33,11 +35,20 @@ const HomePage = () => {
         setTimeout(()=>{
             fetch('http://localhost:8000/blogs')
             .then(res => {
+                if(!res.ok){
+                    throw Error("The requested data cannot be found") //error commig from server
+                }
                 return res.json();
             }).then(data => {
                 console.log(data);
                 setIsPending(false);
+                setError(null);
                 setBlogs(data);
+            }).catch((err)=>{
+                setIsPending(false);
+                setBlogs(null);
+                setError(err.message);
+                console.log(err);
             })
         }, 1000)
         
@@ -61,9 +72,9 @@ const HomePage = () => {
                 }
             }>Change name</button>
             <p>{ name }</p> */}
-
+            { error && <div>{ error }</div> }
             { isPending && <div>Loading...</div> }
-            {blogs  && <BlogList blogs = { blogs } heading={ heading }/>}
+            { blogs  && <BlogList blogs = { blogs } heading={ heading }/>}
         </div>
      );
 }

@@ -16,6 +16,7 @@ const HomePage = () => {
     // ])
 
     const [blogs, setBlogs] = useState(null);
+    const [isPending, setIsPending] = useState(true);
 
     // const handleClickButton = (id) => {
     //    const newBlog =  setBlogs(blogs.filter((blog) => blog.id !== id));
@@ -29,13 +30,17 @@ const HomePage = () => {
     // }, [name]);
 
     useEffect(()=>{
-        fetch('http://localhost:8000/blogs')
-        .then(res => {
-            return res.json();
-        }).then(data => {
-            console.log(data);
-            setBlogs(data);
-        })
+        setTimeout(()=>{
+            fetch('http://localhost:8000/blogs')
+            .then(res => {
+                return res.json();
+            }).then(data => {
+                console.log(data);
+                setIsPending(false);
+                setBlogs(data);
+            })
+        }, 1000)
+        
     },[]);
 
     
@@ -57,7 +62,7 @@ const HomePage = () => {
             }>Change name</button>
             <p>{ name }</p> */}
 
-
+            { isPending && <div>Loading...</div> }
             {blogs  && <BlogList blogs = { blogs } heading={ heading }/>}
         </div>
      );

@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 
 const useFetch  = (url) => {
 
+    const abortCont = new AbortController();
+
     const [data, setData] = useState(null);
     const [isPending, setIsPending] = useState(true);
     const [error, setError] = useState(null);
@@ -11,7 +13,7 @@ const useFetch  = (url) => {
 
     useEffect(()=>{
         setTimeout(()=>{
-            fetch(url)
+            fetch(url, {signal: abortCont.signal})
             .then(res => {
                 if(!res.ok){
                     throw Error("The requested data cannot be found") //error commig from server
@@ -25,13 +27,20 @@ const useFetch  = (url) => {
                 setData(data);
             }).
             catch((err)=>{
-                setIsPending(false);
-                setData(null);
-                setError(err.message);
-                console.log(err);
+                 
+                if(err.name === "AbortError"){
+                    console.log("Fetch aborted");
+                }else{
+                    setIsPending(false);
+                    setData(null);
+                    setError(err.message);
+                    console.log(err);
+                }
             })
+            
+
         }, 1000)
-        
+        return ()=> abortCont.abort();
     },[]);
 
 
